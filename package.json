@@ -1,7 +1,7 @@
 {
-    "name": "speed-game-backend",
+    "name": "interview-auth-server",
     "version": "1.0.0",
-    "description": "speed-game-backend",
+    "description": "interview-auth-server",
     "main": "index.ts",
     "scripts": {
         "start": "yarn build && yarn dev",
