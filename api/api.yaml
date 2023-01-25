@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Quickstart
+  description: Quickstart for OAS-Tools
+servers:
+- url: /api/v1
+  description: Development server
+
+paths:
+
+  /user/register:
+    x-router-controller: UserController
+    post:
+      operationId: 'register'
+      requestBody:
+        $ref: '#/components/requestBodies/RegisterBody'
+      responses:
+        200:
+          $ref: '#/components/responses/ExampleSuccessResponse'
+        400:
+          $ref: '#/components/responses/ExampleBadResponse'
+        500:
+          $ref: '#/components/responses/ExampleBadResponse'
+    
+  /user/login:
+    x-router-controller: UserController
+    post:
+      operationId: 'login'
+      requestBody:
+        $ref: '#/components/requestBodies/LoginBody'
+      responses:
+        200:
+          $ref: '#/components/responses/ExampleSuccessResponse'
+        401:
+          $ref: '#/components/responses/ExampleBadResponse'
+        500:
+          $ref: '#/components/responses/ExampleBadResponse'
+
+  /user/f1:
+    x-router-controller: UserController
+    get:
+      operationId: 'f1'
+      responses:
+        200:
+          description: succeeded
+        500:
+          description: error
+
+  /user/f2:
+    x-router-controller: UserController
+    get:
+      operationId: 'f2'
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: succeeded
+        500:
+          description: error
+
+  /user/f3:
+    x-router-controller: UserController
+    get:
+      operationId: 'f3'
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: succeeded
+        500:
+          description: error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  requestBodies:
+    RegisterBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegisterSchema'
+    LoginBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginSchema'
+            
+  responses:
+    ExampleSuccessResponse:
+      description: "OK"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExampleResponse'
+    ExampleBadResponse:
+      description: "KO"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExampleResponse'
+
+  schemas:
+    ExampleResponse:
+      type: object
+
+    LoginSchema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username: 
+          type: string
+        password: 
+          type: string
+          
+    RegisterSchema:
+      allOf:
+        - $ref: '#/components/schemas/LoginSchema'
+        - type: object
+          required:
+            - role
+          properties:
+            role:
+              type: integer
+              minimum: 1
+              maximum: 5
+
+
+## edit with https://editor.swagger.io/
