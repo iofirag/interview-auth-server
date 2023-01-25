@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { JWT_PRIVATE_KEY, MISSING_AUTHORIZATION_TOKEN } from './constants';
 
 export const encodeJWT = (data: any) => {
@@ -8,7 +8,7 @@ export const encodeJWT = (data: any) => {
     } catch (error) {
         throw new Error('JWT Error');
     }
-}
+};
 
 export const decodeJWT = (token: string) => {
     try {
@@ -16,23 +16,24 @@ export const decodeJWT = (token: string) => {
     } catch (error) {
         throw new Error('Bad JWT');
     }
-}
+};
 
 export const getTokenFromRequest = (req: Request) => {
     try {
-        if (!req.headers['authorization']) throw new Error(MISSING_AUTHORIZATION_TOKEN)
+        if (!req.headers['authorization']) throw new Error(MISSING_AUTHORIZATION_TOKEN);
         return (req.headers['authorization'] as string).split(' ')[1];
     } catch (error) {
         throw new Error('Bad JWT');
     }
-}
+};
 
-export const validateBearerToken = (bearerToken: string) => {
+export const bearerTokenValidationMiddleware = (req, res, next) => {
     try {
-        console.log('validateBearerToken')
-        const jwtToken = bearerToken.split(' ')[1]
-        return jwt.verify(jwtToken, JWT_PRIVATE_KEY);
+        const jwtToken = req.headers['authorization'].split(' ')[1];
+        const decodedJWT = decodeJWT(jwtToken);
+        if (!decodedJWT) next();
+        req.decodedJWT = decodedJWT;
     } catch (error) {
         throw new Error('Bad JWT');
     }
-}
+};

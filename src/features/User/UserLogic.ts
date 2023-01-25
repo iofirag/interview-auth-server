@@ -2,8 +2,7 @@ import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../../containerTypes';
 import { ROLE_LOWER_THAN_API_NEEDS, WRONG_CREDENTIALS } from '../../utils/constants';
-import jwt from 'jsonwebtoken';
-import { decodeJWT, encodeJWT } from '../../utils/helpers';
+import { encodeJWT } from '../../utils/helpers';
 
 @injectable()
 export default class UserLogic {
@@ -38,19 +37,17 @@ export default class UserLogic {
         }
     }
 
-    f2(token) {
+    f2() {
         try {
-            decodeJWT(token)
             return this._archive.getPrivateData();
         } catch (error) {
             throw error
         }
     }
 
-    f3(token) {
+    f3(decodedJWT) {
         try {
-            const decoded: any = decodeJWT(token)
-            if (decoded.role < 5) throw new Error(ROLE_LOWER_THAN_API_NEEDS);
+            if (decodedJWT.role < 5) throw new Error(ROLE_LOWER_THAN_API_NEEDS);
             return this._archive.getPrivateRoledData();
         } catch (error) {
             throw error;

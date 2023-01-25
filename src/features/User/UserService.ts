@@ -72,8 +72,7 @@ export default class UserService {
             msg: 'success',
         };
         try {
-            const token = getTokenFromRequest(req);
-            result = this._handler.f2(token);
+            result = this._handler.f2();
         } catch (error) {
             logObj.isError = true;
             logObj.msg = error.message;
@@ -93,8 +92,7 @@ export default class UserService {
             msg: 'success',
         };
         try {
-            const token = getTokenFromRequest(req);
-            result = this._handler.f3(token);
+            result = this._handler.f3(req.decodedJWT);
         } catch (error) {
             logObj.isError = true;
             logObj.msg = error.message;
